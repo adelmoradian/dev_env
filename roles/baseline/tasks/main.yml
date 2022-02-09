@@ -1,0 +1,29 @@
+---
+
+- name: install dependencies
+  become: yes
+  become_user: root
+  apt:
+    name: "{{ base_packages }}"
+    state: latest
+    update_cache: true
+
+- include: nvm.yml
+
+- block:
+  - name: find .vimrc if it exists
+    find:
+      paths: /home/vagrant
+      patterns: ".vimrc"
+    register: find_results
+
+  - name: delete .vimrc if exists
+    file:
+      path: "{{ item['path'] }}"
+      state: absent
+    with_items: "{{ find_results['files'] }}"
+    
+  - name: add new .vimrc
+    template:
+      src: ../assets/.vimrc
+      dest: /home/vagrant/.vimrc

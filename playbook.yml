@@ -1,0 +1,6 @@
+---
+
+- hosts: all
+  roles:
+    - role: baseline
+    - role: ruby

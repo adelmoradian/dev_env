@@ -21,3 +21,6 @@ rvm1_symlink_bundler_binaries:
   - 'bundler'
 
 rvm1_symlink_to: '/usr/local/bin'
+
+gems:
+  - 'solargraph'

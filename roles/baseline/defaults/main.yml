@@ -1,0 +1,22 @@
+---
+
+base_packages:
+  - apt-transport-https
+  - gcc
+  - g++
+  - make
+  - fzf
+  - silversearcher-ag
+  - vim
+  - curl
+  - git
+
+nvm_user: "vagrant"
+nvm_home: "/home/{{ nvm_user }}"
+nvm_group: "vagrant"
+nvm_install_path: "{{ nvm_home }}/.nvm"
+nvm_download_path: "/tmp/install.sh"
+nvm_node_version: "v17.4.0"
+nvm_node_dir: "{{ nvm_install_path }}/versions/node/{{ nvm_node_version }}"
+nvm_npm_path: "{{ nvm_node_dir }}/bin/npm"
+nvm_version: v0.39.1
