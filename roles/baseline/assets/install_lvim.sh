@@ -93,17 +93,9 @@ function main() {
   check_system_deps
 
   if [ "$ARGS_INSTALL_DEPENDENCIES" -eq 1 ]; then
-    msg "Would you like to install LunarVim's NodeJS dependencies?"
-    read -p "[y]es or [n]o (default: no) : " -r answer
-    [ "$answer" != "${answer#[Yy]}" ] && install_nodejs_deps
-
-    msg "Would you like to install LunarVim's Python dependencies?"
-    read -p "[y]es or [n]o (default: no) : " -r answer
-    [ "$answer" != "${answer#[Yy]}" ] && install_python_deps
-
-    msg "Would you like to install LunarVim's Rust dependencies?"
-    read -p "[y]es or [n]o (default: no) : " -r answer
-    [ "$answer" != "${answer#[Yy]}" ] && install_rust_deps
+    install_nodejs_deps
+    install_python_deps
+    install_rust_deps
   fi
 
   backup_old_config
