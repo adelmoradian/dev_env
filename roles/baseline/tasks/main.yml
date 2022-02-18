@@ -33,22 +33,14 @@
   - name: add new .vimrc
     template:
       src: ../assets/.vimrc
-      dest: /home/vagrant/.vimrc
+      dest: /home/vagrant/.vimr
 
-- block:
-  - name: find install_lvim.sh if it exists
-    find:
-      paths: /tmp
-      patterns: "install_lvim"
-    register: find2_results
+- name: install lvim
+  shell: |
+    echo 'to install lunarvim execute the following' && \
+    echo 'bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh)' && \
+    echo 'config is under temp'
+  register: command_output
 
-  - name: delete install_lvim.sh if exists
-    file:
-      path: "{{ item['path'] }}"
-      state: absent
-    with_items: "{{ find2_results['files'] }}"
-    
-  - name: add new install_lvim.sh
-    template:
-      src: ../assets/install_lvim.sh
-      dest: /tmp
+- debug: 
+    var: command_output.stdout_lines
