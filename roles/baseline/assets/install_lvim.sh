@@ -15,7 +15,7 @@ declare -r LUNARVIM_CONFIG_DIR="${LUNARVIM_CONFIG_DIR:-"$XDG_CONFIG_HOME/lvim"}"
 declare -r LUNARVIM_BASE_DIR="${LUNARVIM_BASE_DIR:-"$LUNARVIM_RUNTIME_DIR/lvim"}"
 
 # TODO: Use a dedicated cache directory #1256
-declare -r LUNARVI_CACHE_DIR="$XDG_CACHE_HOME/nvim"
+declare -r LUNARVIM_CACHE_DIR="$XDG_CACHE_HOME/nvim"
 
 declare BASEDIR
 BASEDIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
@@ -93,9 +93,17 @@ function main() {
   check_system_deps
 
   if [ "$ARGS_INSTALL_DEPENDENCIES" -eq 1 ]; then
-    install_nodejs_deps
-    install_python_deps
-    install_rust_deps
+    msg "Would you like to install LunarVim's NodeJS dependencies?"
+    read -p "[y]es or [n]o (default: no) : " -r answer
+    [ "$answer" != "${answer#[Yy]}" ] && install_nodejs_deps
+
+    msg "Would you like to install LunarVim's Python dependencies?"
+    read -p "[y]es or [n]o (default: no) : " -r answer
+    [ "$answer" != "${answer#[Yy]}" ] && install_python_deps
+
+    msg "Would you like to install LunarVim's Rust dependencies?"
+    read -p "[y]es or [n]o (default: no) : " -r answer
+    [ "$answer" != "${answer#[Yy]}" ] && install_rust_deps
   fi
 
   backup_old_config
