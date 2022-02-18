@@ -42,7 +42,7 @@ else
 endif
 
 "Space is the leader
-let mapleader=" "
+let mapleader= "\<Space>"
 
 " UI
 set number " show line numbers
@@ -52,10 +52,6 @@ set lazyredraw " redraw only when we need to
 set showmatch " highlight matching [{()}]
 set wildmenu " visual autocomplete for command menu
 set cmdheight=2 " Give more space for displaying messages
-" All of these to change the cursor in insert mode
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 set ttimeout
 set ttimeoutlen=1
 set listchars=tab:>-,trail:~,extends:>,precedes:<,space:.
@@ -68,6 +64,8 @@ set expandtab " tabs are spaces. In other words, tab will just insert 4 spaces
 " Search
 set incsearch " search as characters are entered
 set hlsearch " highlight matches
+:set ignorecase
+:set smartcase
 
 " Folds
 set foldenable " enable folding
@@ -75,58 +73,6 @@ set foldlevelstart=10 " open most folds by default
 set foldnestmax=10 " 10 nested fold max
 " Misc
 set backspace=indent,eol,start " Backspace works normal in Insert mode"
-
-
-" Mappings
-let $FZF_DEFAULT_COMMAND = 'ag --hidden -l -g ""'
-	" open silver searcher - search for content of files
-nnoremap <leader>a :Ag!<CR>
-	" open fuzzy finder - search for files
-nnoremap <leader>f :FZF<CR>
-	" find in NERDTree
-nnoremap fo :NERDTreeFind<CR>
-	" jump left
-nnoremap <leader>l 10l
-	" jump up
-nnoremap <leader>k 10k
-	" jump down
-nnoremap <leader>j 10j
-	" jump left
-nnoremap <leader>h 10h
-	" jump words forward
-nnoremap <leader>w 10w
-	" jump words backward
-nnoremap <leader>b 10b
-	" search for whatever under cursor
-nnoremap s *N
-	" let got of the search
-nnoremap <leader>s :noh<CR>
-	" close all without save
-nnoremap <leader>qq :qa!<CR>
-	" save all
-nnoremap <leader>w :wa<CR>
-	" save all and close all
-nnoremap <leader>wq :wa<CR> :qa<CR>
-	" open terminal
-nnoremap <leader>t :term<CR>
-	" open terminal vertical
-nnoremap <leader>vt :vert term<CR>
-    " window stuff
-nnoremap <S-Up> 10<C-W>-
-nnoremap <S-Down> 10<C-W>+
-nnoremap <S-Right> 10<C-W>>
-nnoremap <S-Left> 10<C-W><
-nnoremap <S-v> <C-w>v
-nnoremap <S-s> <C-w>s
-nnoremap <S-c> <C-w>c
-nnoremap <S-h> <C-w>h
-nnoremap <S-l> <C-w>l
-nnoremap <S-j> <C-w>j
-nnoremap <S-k> <C-w>k
-    " tab stuff
-nnoremap <S-t> :tabnew<CR>
-nnoremap <S-w> :tabclose<CR>
-nnoremap <S-p> :tabprevious<CR>
 
 " Plugins
 call plug#begin()
@@ -143,6 +89,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'liuchengxu/vim-which-key'
 call plug#end()
 " Terraform settings"
 let g:terraform_align=1
@@ -153,22 +100,6 @@ colorscheme nord
 " NERDTree settings
 let g:NERDTreeWinSize = 40
 let NERDTreeShowHidden=1
-    " Start NERDTree and leave the cursor in it.
-autocmd VimEnter * NERDTree
-    " Start NERDTree and put the cursor back in the other window.
-autocmd VimEnter * NERDTree | wincmd p
-    " Start NERDTree when Vim is started without file arguments.
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
-    " Exit Vim if NERDTree is the only window remaining in the only tab.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-    " Close the tab if NERDTree is the only window remaining in it.
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-    " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
-    " Open the existing NERDTree on each new tab.
-autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 
 " ALE settings
 
@@ -186,9 +117,9 @@ let g:ale_fixers = {
 let g:ale_completion_enabled = 1
 set omnifunc=ale#completion#OmniFunc
 let g:ale_completion_autoimport = 1
-nmap <silent> <C-h> <Plug>(ale_previous_wrap)
-nmap <silent> <C-l> <Plug>(ale_next_wrap)
-nnoremap <C-f> :ALEFix<CR>
+nmap <leader>cdp <Plug>(ale_previous_wrap)
+nmap <leader>cdn <Plug>(ale_next_wrap)
+nnoremap <leader>cl :ALEFix<CR>
 set rtp+=~/.fzf
 
 " Lightline settings
@@ -197,10 +128,10 @@ if !has('gui_running')
   set t_Co=256
 endif
 let g:lightline = {
-      \ 'colorscheme': 'nord',
+      \ 'colorscheme': 'default',
       \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified'] ]
+      \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'filename', 'modified'], ['absolutepath'] ],
+      \   'right': [ [ 'lineinfo' ], [ 'percent' ], ['filetype'] ]
       \ },
       \ 'component_function': {
 			\   'gitbranch': 'gitbranch#name'
@@ -233,13 +164,13 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+nmap <leader>cgd <Plug>(coc-definition)
+nmap <leader>cgy <Plug>(coc-type-definition)
+nmap <leader>cgi <Plug>(coc-implementation)
+nmap <leader>cgr <Plug>(coc-references)
 
-" Use C-K to show documentation in preview window.
-nnoremap <silent> <C-k> :call <SID>show_documentation()<CR>
+" show documentation in preview window.
+nnoremap <leader>ck :call <SID>show_documentation()<CR>
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
@@ -254,7 +185,7 @@ endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>crn <Plug>(coc-rename)
 
 " vim-rspec settings
 
@@ -262,3 +193,101 @@ map <F5> :call RunCurrentSpecFile()<CR>
 map <F6> :call RunNearestSpec()<CR>
 map <F7> :call RunLastSpec()<CR>
 map <F8> :call RunAllSpecs()<CR>
+
+" vim which-key
+call which_key#register('<Space>', "g:which_key_map")
+nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+" After pressing leader the guide buffer will pop up when there are no further keystrokes within timeoutlen
+set timeoutlen=100
+nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
+let g:which_key_map =  {}
+
+" Mappings
+let $FZF_DEFAULT_COMMAND = 'ag --hidden -l -g ""'
+" SEARCH <leader>f
+	" open silver searcher - search for content of files
+nnoremap <leader>fa :Ag<CR>
+	" open fuzzy finder - search for files
+nnoremap <leader>ff :Files<CR>
+  " open latest files
+nnoremap <leader>fh :History<CR>
+  " change colors
+nnoremap <leader>fc :Colors<CR>
+let g:which_key_map['f'] = {
+      \ 'name' : '+fzf' ,
+      \ 'a' : ['Ag'  , 'find content']      ,
+      \ 'f' : ['Files'  , 'find files']   ,
+      \ 'h' : ['History'  , 'history']   ,
+      \ 'c' : ['Colors'  , 'colors']   ,
+      \ }
+
+" NERDTree <leader>e
+	" open/close NERDTree
+nnoremap <leader>ee :NERDTreeToggle<CR>
+	" find in NERDTree
+nnoremap <leader>ef :NERDTreeFind<CR>
+	" refresh
+nnoremap <leader>er :NERDTreeRefreshRoot<CR>
+let g:which_key_map['e'] = {
+      \ 'name' : '+explorer' ,
+      \ 'e' : ['NERDTreeToggle'  , 'toggle explorer']      ,
+      \ 'f' : ['NERDTreeFind'  , 'find file in tree']   ,
+      \ 'r' : ['NERDTreeRefreshRoot'  , 'refresh tree']   ,
+      \ }
+" NAVIGATION <leader>
+	" jump left
+nnoremap <leader>l 10l
+let g:which_key_map['l'] = 'which_key_ignore'
+	" jump up
+nnoremap <leader>k 10k
+let g:which_key_map['k'] = 'which_key_ignore'
+	" jump down
+nnoremap <leader>j 10j
+let g:which_key_map['j'] = 'which_key_ignore'
+	" jump left
+nnoremap <leader>h 10h
+let g:which_key_map['h'] = 'which_key_ignore'
+" SEARCH <leader>s
+	" search for whatever under cursor
+nnoremap <leader>s *N
+let g:which_key_map['s'] = 'which_key_ignore'
+	" let got of the search
+nnoremap <leader>sa :noh<CR>
+let g:which_key_map['sa'] = 'which_key_ignore'
+" EXIT/SAVE <leader>q
+	" exit without save
+nnoremap <leader>qqq :qa!<CR>
+	" save all
+nnoremap <leader>qws :wa<CR>
+	" save all and close all
+nnoremap <leader>qwq :wa<CR> :qa<CR>
+let g:which_key_map['q'] = {
+      \ 'name' : '+quiet/save' ,
+      \ 'qq' : [':qa!<CR>' , 'exit without save']   ,
+      \ 'ws' : [':wa<CR>' , 'save']   ,
+      \ 'wq' : [':wa<CR> :qa<CR>' , 'save and quiet']   ,
+      \ }
+" WINDOW
+nnoremap <S-Up> 10<C-W>-
+nnoremap <S-Down> 10<C-W>+
+nnoremap <S-Right> 10<C-W>>
+nnoremap <S-Left> 10<C-W><
+nnoremap <S-v> <C-w>v
+nnoremap <S-s> <C-w>s
+nnoremap <S-c> <C-w>c
+nnoremap <S-h> <C-w>h
+nnoremap <S-l> <C-w>l
+nnoremap <S-j> <C-w>j
+nnoremap <S-k> <C-w>k
+" TABS <leader>n
+nnoremap <leader>tw :tabnew<CR>
+nnoremap <leader>tc :tabclose<CR>
+nnoremap <leader>tn :tabnext<CR>
+nnoremap <leader>tp :tabprevious<CR>
+let g:which_key_map['t'] = {
+      \ 'name' : '+tabs' ,
+      \ 'w' : ['tabnew' , 'new tab']   ,
+      \ 'c' : ['tabclose' , 'close tab']   ,
+      \ 'n' : ['tabnext' , 'next tab']   ,
+      \ 'p' : ['tabprevious' , 'previous tab']   ,
+      \ }

@@ -8,6 +8,8 @@ base_packages:
   - fzf
   - silversearcher-ag
   - vim
+  - neovim
+  - cargo
   - curl
   - git
 

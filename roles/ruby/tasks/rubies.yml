@@ -65,6 +65,8 @@
   when: rvm1_delete_ruby is defined and rvm1_delete_ruby
 
 - name: Install gems
+  async: 600
+  poll: 0
   shell: >
     {{ rvm1_install_path }}/wrappers/{{ item.0.stdout }}/gem install {{ item.1 }}
   loop: "{{ ruby_patch.results|product(gems)|list }}"

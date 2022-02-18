@@ -1,8 +1,15 @@
 ---
 
+- name: add neovim ppa
+  become: yes
+  become_user: root
+  apt_repository: repo=ppa:neovim-ppa/unstable state=present
+
 - name: install dependencies
   become: yes
   become_user: root
+  async: 600
+  poll: 0
   apt:
     name: "{{ base_packages }}"
     state: latest
@@ -27,3 +34,21 @@
     template:
       src: ../assets/.vimrc
       dest: /home/vagrant/.vimrc
+
+- block:
+  - name: find install_lvim.sh if it exists
+    find:
+      paths: /tmp
+      patterns: "install_lvim"
+    register: find2_results
+
+  - name: delete install_lvim.sh if exists
+    file:
+      path: "{{ item['path'] }}"
+      state: absent
+    with_items: "{{ find2_results['files'] }}"
+    
+  - name: add new install_lvim.sh
+    template:
+      src: ../assets/install_lvim.sh
+      dest: /tmp
