@@ -33,14 +33,4 @@
   - name: add new .vimrc
     template:
       src: ../assets/.vimrc
-      dest: /home/vagrant/.vimr
-
-- name: install lvim
-  shell: |
-    echo 'to install lunarvim execute the following' && \
-    echo 'bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh)' && \
-    echo 'config is under temp'
-  register: command_output
-
-- debug: 
-    var: command_output.stdout_lines
+      dest: /home/vagrant/.vimrc

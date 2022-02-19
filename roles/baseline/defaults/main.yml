@@ -12,6 +12,7 @@ base_packages:
   - cargo
   - curl
   - git
+  - yarn
 
 nvm_user: "vagrant"
 nvm_home: "/home/{{ nvm_user }}"
