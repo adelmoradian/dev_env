@@ -1,15 +1,8 @@
 ---
 
-- name: add neovim ppa
-  become: yes
-  become_user: root
-  apt_repository: repo=ppa:neovim-ppa/unstable state=present
-
 - name: install dependencies
   become: yes
   become_user: root
-  async: 600
-  poll: 0
   apt:
     name: "{{ base_packages }}"
     state: latest

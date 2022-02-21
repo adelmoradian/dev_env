@@ -12,7 +12,7 @@ rvm1_bundler_install: True
 rvm1_delete_ruby:
 
 # Install path for rvm (defaults to user based install)
-rvm1_install_path: '/home/vagrant/.rvm'
+rvm1_install_path: '/usr/share/rvm'
 
 # Add or remove any install flags
 # NOTE: If you are doing a ROOT BASED INSTALL then
@@ -45,10 +45,11 @@ rvm1_gpg_key_server: 'hkp://pool.sks-keyservers.net'
 
 # The GPG alternative key servers
 rvm1_gpg_key_servers:
-  - '{{ rvm1_gpg_key_server }}'
-  - hkp://ipv4.pool.sks-keyservers.net
-  - hkp://pgp.mit.edu
-  - hkp://keyserver.pgp.com
+  - hkp://keys.gnupg.net
+  # - '{{ rvm1_gpg_key_server }}'
+  # - hkp://ipv4.pool.sks-keyservers.net
+  # - hkp://pgp.mit.edu
+  # - hkp://keyserver.pgp.com
 
 # autolib mode, see https://rvm.io/rvm/autolibs
 rvm1_autolib_mode: 3

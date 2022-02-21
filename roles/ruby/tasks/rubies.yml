@@ -6,6 +6,8 @@
   changed_when: False
 
 - name: Install rubies
+  become: yes
+  become_user: root
   command: '{{ rvm1_rvm }} install {{ item }} {{ rvm1_ruby_install_flags }}'
   loop: '{{ rvm1_rubies | difference(rvm_list_strings.stdout_lines) }}'
 
@@ -15,6 +17,8 @@
   register: detect_default_ruby_version
 
 - name: Select default ruby
+  become: yes
+  become_user: root
   command: '{{ rvm1_rvm }} alias create default {{ rvm1_default_ruby_version }}'
   when: detect_default_ruby_version.stdout|default() == '' or
         rvm1_default_ruby_version not in detect_default_ruby_version.stdout
@@ -65,6 +69,8 @@
   when: rvm1_delete_ruby is defined and rvm1_delete_ruby
 
 - name: Install gems
+  become: yes
+  become_user: root
   shell: >
     {{ rvm1_install_path }}/wrappers/{{ item.0.stdout }}/gem install {{ item.1 }}
   loop: "{{ ruby_patch.results|product(gems)|list }}"

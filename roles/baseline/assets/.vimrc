@@ -231,7 +231,14 @@ nmap <leader>rn <Plug>(coc-rename)
 
 " vim-rspec settings
 
-map <F5> :call RunCurrentSpecFile()<CR>
-map <F6> :call RunNearestSpec()<CR>
-map <F7> :call RunLastSpec()<CR>
-map <F8> :call RunAllSpecs()<CR>
+" map <F5> :call RunCurrentSpecFile()<CR>
+" map <F6> :call RunNearestSpec()<CR>
+" map <F7> :call RunLastSpec()<CR>
+" map <F8> :call RunAllSpecs()<CR>
+"
+" floatterm
+let g:floaterm_keymap_toggle = '<F1>'"
+let g:floaterm_keymap_next   = '<F2>'
+let g:floaterm_keymap_prev   = '<F3>'
+let g:floaterm_keymap_new    = '<F4>'
+autocmd ExitPre * FloatermKill!

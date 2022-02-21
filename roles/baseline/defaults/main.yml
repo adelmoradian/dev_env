@@ -2,14 +2,13 @@
 
 base_packages:
   - apt-transport-https
+  - gnupg2
   - gcc
   - g++
   - make
   - fzf
   - silversearcher-ag
   - vim
-  - neovim
-  - cargo
   - curl
   - git
   - yarn
